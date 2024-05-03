@@ -16,16 +16,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Credentials {
-    private final PasswordHasher hasher = new PasswordHasher();
-    private final Map<String, String> env = loadEnv();
+    private final String ACCOUNT_ID;
+    private final String DATABASE_ID;
+    private final String API_URL;
+    private final String BEARER_TOKEN;
 
-    private final String ACCOUNT_ID = env.get("ACCOUNT_ID");
-    private final String DATABASE_ID = env.get("DATABASE_ID");
-    private final String API_URL = "https://api.cloudflare.com/client/v4/accounts/"
-            + hasher.urlBase64Decode(ACCOUNT_ID)
-            + "/d1/database/"
-            + hasher.urlBase64Decode(DATABASE_ID) + "/query";
-    private final String BEARER_TOKEN = hasher.urlBase64Decode(env.get("BEARER_TOKEN"));
+    public Credentials() {
+        final Map<String, String> env = loadEnv();
+        final PasswordHasher hasher = new PasswordHasher();
+        this.ACCOUNT_ID = env.get("ACCOUNT_ID");
+        this.DATABASE_ID = env.get("DATABASE_ID");
+        this.API_URL = "https://api.cloudflare.com/client/v4/accounts/" + hasher.urlBase64Decode(ACCOUNT_ID)
+                + "/d1/database/"
+                + hasher.urlBase64Decode(DATABASE_ID) + "/query";
+        this.BEARER_TOKEN = hasher.urlBase64Decode(env.get("BEARER_TOKEN"));
+    }
 
     public String getAPI_URL() {
         return this.API_URL;
@@ -46,7 +51,8 @@ public class Credentials {
     private Map<String, String> loadEnv() {
         Map<String, String> env = new HashMap<>();
         try {
-            try (BufferedReader reader = new BufferedReader(new FileReader("src/main/java/com/github/mfazrinizar/RegistrationForm/Credentials/.env"))) {
+            try (BufferedReader reader = new BufferedReader(
+                    new FileReader("src/main/java/com/github/mfazrinizar/RegistrationForm/Credentials/.env"))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     String[] parts = line.split("=", 2);
