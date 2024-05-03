@@ -4,14 +4,14 @@ package com.github.mfazrinizar.RegistrationForm.Util;
  * Author       : M. Fazri Nizar
  * Institution  : Sriwijaya University
  * GitHub       : github.com/mfazrinizar
- * File Name    : LabelController.java
+ * File Name    : LabelFieldController.java
  */
 
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-public class LabelController {
+public class LabelFieldController {
     public static void clearInvalidLabel(JLabel... labels) {
         for (JLabel label : labels) {
             label.setText("");

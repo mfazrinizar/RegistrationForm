@@ -25,7 +25,6 @@ public class RegistrationForm extends JFrame {
 
     public RegistrationForm() {
         super("Borang Pendaftaran Member");
-        // warmUpHttpRequestAsync("https://google.com");
 
         JLabel titleLabel = new JLabel("Form Registrasi", JLabel.CENTER);
         titleLabel.setForeground(Color.BLUE);

@@ -28,7 +28,7 @@ import com.github.mfazrinizar.RegistrationForm.DatabaseAPI.CheckPasswordUser;
 import com.github.mfazrinizar.RegistrationForm.DatabaseAPI.GetUserData;
 import com.github.mfazrinizar.RegistrationForm.Util.FormValidator;
 import com.github.mfazrinizar.RegistrationForm.Util.GetZonedDateTime;
-import com.github.mfazrinizar.RegistrationForm.Util.LabelController;
+import com.github.mfazrinizar.RegistrationForm.Util.LabelFieldController;
 
 public class GetDataButtonListener implements ActionListener {
     private final JTextField nameTextField;
@@ -47,10 +47,10 @@ public class GetDataButtonListener implements ActionListener {
     private final JLabel phoneNumberErrorLabel;
 
     public GetDataButtonListener(JTextField nameTextField, JTextField emailTextField, JPasswordField passwordTextField,
-                                 JPasswordField confirmPasswordTextField, AutoCompleteComboBox countryComboBox, JTextField provinceTextField,
-                                 JTextField phoneNumberTextField, JLabel nameErrorLabel, JLabel emailErrorLabel, JLabel passwordErrorLabel,
-                                 JLabel confirmPasswordErrorLabel, JLabel countryErrorLabel, JLabel provinceErrorLabel,
-                                 JLabel phoneNumberErrorLabel) {
+            JPasswordField confirmPasswordTextField, AutoCompleteComboBox countryComboBox, JTextField provinceTextField,
+            JTextField phoneNumberTextField, JLabel nameErrorLabel, JLabel emailErrorLabel, JLabel passwordErrorLabel,
+            JLabel confirmPasswordErrorLabel, JLabel countryErrorLabel, JLabel provinceErrorLabel,
+            JLabel phoneNumberErrorLabel) {
         this.nameTextField = nameTextField;
         this.emailTextField = emailTextField;
         this.passwordTextField = passwordTextField;
@@ -73,11 +73,10 @@ public class GetDataButtonListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        LabelController.clearInvalidLabel(nameErrorLabel, emailErrorLabel, passwordErrorLabel,
+        LabelFieldController.clearInvalidLabel(nameErrorLabel, emailErrorLabel, passwordErrorLabel,
                 confirmPasswordErrorLabel, countryErrorLabel, provinceErrorLabel, phoneNumberErrorLabel);
 
         CheckPasswordUser passwordChecker = new CheckPasswordUser();
-        GetZonedDateTime zonedDateTime = new GetZonedDateTime();
         GetUserData getUserData = new GetUserData();
 
         String name = nameTextField.getText().trim();
@@ -118,7 +117,7 @@ public class GetDataButtonListener implements ActionListener {
                     File file = fileChooser.getSelectedFile();
                     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file + ".txt"))) {
                         writer.write(
-                                "Waktu: " + zonedDateTime.getCurrentZonedTime()
+                                "Waktu: " + GetZonedDateTime.getCurrentZonedTime()
                                         + " (WIB, Data Diambil dari TextField Langsung)");
                         writer.newLine();
                         writer.write("Nama: " + nameTextField.getText().trim());
@@ -174,53 +173,55 @@ public class GetDataButtonListener implements ActionListener {
                                                 JOptionPane.OK_CANCEL_OPTION);
                                         if (dialogResult == JOptionPane.OK_OPTION) {
 
-                                            getUserData.getUserDataAsync(inputEmail, API_URL, BEARER_TOKEN, userData -> {
-                                                if (userData != null) {
-                                                    JFileChooser fileChooser = new JFileChooser();
-                                                    if (fileChooser
-                                                            .showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-                                                        File file = fileChooser.getSelectedFile();
-                                                        try (BufferedWriter writer = new BufferedWriter(
-                                                                new FileWriter(file + ".txt"))) {
-                                                            writer.write(
-                                                                    "Waktu Saat Diambil: "
-                                                                            + zonedDateTime.getCurrentZonedTime()
-                                                                            + " (WIB, Data Diambil dari Database)");
-                                                            writer.newLine();
-                                                            writer.write("Nama: " + userData[0]);
-                                                            writer.newLine();
-                                                            writer.write("Email: " + userData[1]);
-                                                            writer.newLine();
-                                                            writer.write("Negara: " + userData[2]);
-                                                            writer.newLine();
-                                                            writer.write("Provinsi: " + userData[3]);
-                                                            writer.newLine();
-                                                            writer.write("Nomor Telepon: " + userData[4]);
-                                                            writer.newLine();
-                                                            writer.write(
-                                                                    "Waktu Saat Terdaftar: " + userData[5]
-                                                                            + " (WIB)");
-                                                            writer.newLine();
+                                            getUserData.getUserDataAsync(inputEmail, API_URL, BEARER_TOKEN,
+                                                    userData -> {
+                                                        if (userData != null) {
+                                                            JFileChooser fileChooser = new JFileChooser();
+                                                            if (fileChooser
+                                                                    .showSaveDialog(
+                                                                            null) == JFileChooser.APPROVE_OPTION) {
+                                                                File file = fileChooser.getSelectedFile();
+                                                                try (BufferedWriter writer = new BufferedWriter(
+                                                                        new FileWriter(file + ".txt"))) {
+                                                                    writer.write(
+                                                                            "Waktu Saat Diambil: "
+                                                                                    + GetZonedDateTime
+                                                                                            .getCurrentZonedTime()
+                                                                                    + " (WIB, Data Diambil dari Database)");
+                                                                    writer.newLine();
+                                                                    writer.write("Nama: " + userData[0]);
+                                                                    writer.newLine();
+                                                                    writer.write("Email: " + userData[1]);
+                                                                    writer.newLine();
+                                                                    writer.write("Negara: " + userData[2]);
+                                                                    writer.newLine();
+                                                                    writer.write("Provinsi: " + userData[3]);
+                                                                    writer.newLine();
+                                                                    writer.write("Nomor Telepon: " + userData[4]);
+                                                                    writer.newLine();
+                                                                    writer.write(
+                                                                            "Waktu Saat Terdaftar: " + userData[5]
+                                                                                    + " (WIB)");
+                                                                    writer.newLine();
+                                                                    JOptionPane.showMessageDialog(null,
+                                                                            "Data Terambil dari Database");
+                                                                } catch (IOException ex) {
+                                                                    JOptionPane.showMessageDialog(null,
+                                                                            "Terdapat masalah. Coba lagi atau hubungi developer. ");
+                                                                    ex.printStackTrace();
+                                                                }
+                                                            }
+                                                        } else {
                                                             JOptionPane.showMessageDialog(null,
-                                                                    "Data Terambil dari Database");
-                                                        } catch (IOException ex) {
-                                                            JOptionPane.showMessageDialog(null,
-                                                                    "Terdapat masalah. Coba lagi atau hubungi developer. ");
-                                                            ex.printStackTrace();
+                                                                    "Gagal mendapatkan data. Coba lagi atau hubungi developer.");
                                                         }
-                                                    }
-                                                } else {
-                                                    JOptionPane.showMessageDialog(null,
-                                                            "Gagal mendapatkan data. Coba lagi atau hubungi developer.");
-                                                }
-                                            });
+                                                    });
                                         }
                                     }
                                     case "INCORRECT" ->
-                                            JOptionPane.showMessageDialog(null, "Email atau Password salah.");
+                                        JOptionPane.showMessageDialog(null, "Email atau Password salah.");
                                     case "EMAIL-DOES-NOT-EXIST" ->
-                                            JOptionPane.showMessageDialog(null, "Email atau Password salah."); // Menghindari
-
+                                        JOptionPane.showMessageDialog(null, "Email atau Password salah."); // Menghindari
 
                                     // brute
                                     // force
@@ -243,4 +244,3 @@ public class GetDataButtonListener implements ActionListener {
         }
     }
 }
-

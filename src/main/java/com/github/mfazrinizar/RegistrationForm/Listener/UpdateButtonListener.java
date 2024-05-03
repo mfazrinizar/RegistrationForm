@@ -31,7 +31,7 @@ import com.github.mfazrinizar.RegistrationForm.DatabaseAPI.CheckPasswordUser;
 import com.github.mfazrinizar.RegistrationForm.DatabaseAPI.GetUserData;
 import com.github.mfazrinizar.RegistrationForm.DatabaseAPI.UpdateUserData;
 import com.github.mfazrinizar.RegistrationForm.Util.FormValidator;
-import com.github.mfazrinizar.RegistrationForm.Util.LabelController;
+import com.github.mfazrinizar.RegistrationForm.Util.LabelFieldController;
 
 public class UpdateButtonListener implements ActionListener {
     private JTextField nameTextField, emailTextField, provinceTextField, phoneNumberTextField;
@@ -301,7 +301,7 @@ public class UpdateButtonListener implements ActionListener {
             // For the Password and Konfirmasi Password fields, leave them blank. If they
             // have inputs, validate them, and if valid, update them too.
             UpdateUserData userDataUpdater = new UpdateUserData();
-            LabelController.clearInvalidLabel(nameErrorLabel, emailErrorLabel, passwordErrorLabel,
+            LabelFieldController.clearInvalidLabel(nameErrorLabel, emailErrorLabel, passwordErrorLabel,
                     confirmPasswordErrorLabel, countryErrorLabel, provinceErrorLabel, phoneNumberErrorLabel);
 
             String name = nameTextField.getText().trim();

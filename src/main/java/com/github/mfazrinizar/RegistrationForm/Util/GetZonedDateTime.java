@@ -13,13 +13,13 @@ import java.time.format.DateTimeFormatter;
 
 public class GetZonedDateTime {
 
-    public String getCurrentZonedTime() {
+    public static String getCurrentZonedTime() {
         String currentZoneId = "Asia/Jakarta";
         ZonedDateTime nowWIB = ZonedDateTime.now(ZoneId.of(currentZoneId));
         return nowWIB.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 
-    public String getZonedTime(String zoneId) {
+    public static String getZonedTime(String zoneId) {
         ZonedDateTime now = ZonedDateTime.now(ZoneId.of(zoneId));
         return now.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }

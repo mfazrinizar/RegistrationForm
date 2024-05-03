@@ -16,7 +16,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import com.github.mfazrinizar.RegistrationForm.Util.FormValidator;
-import com.github.mfazrinizar.RegistrationForm.Util.LabelController;
+import com.github.mfazrinizar.RegistrationForm.Util.LabelFieldController;
 import com.github.mfazrinizar.RegistrationForm.Credentials.Credentials;
 import com.github.mfazrinizar.RegistrationForm.CustomUI.AutoCompleteComboBox;
 import com.github.mfazrinizar.RegistrationForm.DatabaseAPI.CheckUserEmail;
@@ -67,7 +67,7 @@ public class RegisterButtonListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         CheckUserEmail emailChecker = new CheckUserEmail();
         RegisterUserData registerUser = new RegisterUserData();
-        LabelController.clearInvalidLabel(nameErrorLabel, emailErrorLabel, passwordErrorLabel,
+        LabelFieldController.clearInvalidLabel(nameErrorLabel, emailErrorLabel, passwordErrorLabel,
                 confirmPasswordErrorLabel, countryErrorLabel, provinceErrorLabel, phoneNumberErrorLabel);
 
         String name = nameTextField.getText().trim();

@@ -21,7 +21,7 @@ import com.github.mfazrinizar.RegistrationForm.CustomUI.AutoCompleteComboBox;
 import com.github.mfazrinizar.RegistrationForm.DatabaseAPI.CheckPasswordUser;
 import com.github.mfazrinizar.RegistrationForm.DatabaseAPI.DeleteUserData;
 import com.github.mfazrinizar.RegistrationForm.Util.FormValidator;
-import com.github.mfazrinizar.RegistrationForm.Util.LabelController;
+import com.github.mfazrinizar.RegistrationForm.Util.LabelFieldController;
 import com.github.mfazrinizar.RegistrationForm.Util.PasswordHasher;
 
 public class DeleteButtonListener implements ActionListener {
@@ -87,11 +87,11 @@ public class DeleteButtonListener implements ActionListener {
                 options[0]);
 
         if (n == JOptionPane.YES_OPTION) { // TextField dipilih
-            LabelController.clearInvalidLabel(emailErrorLabel, countryErrorLabel, provinceErrorLabel,
+            LabelFieldController.clearInvalidLabel(emailErrorLabel, countryErrorLabel, provinceErrorLabel,
                     phoneNumberErrorLabel, confirmPasswordErrorLabel, passwordErrorLabel);
-            LabelController.clearTextField(nameTextField, emailTextField, countryTextField, provinceTextField,
+            LabelFieldController.clearTextField(nameTextField, emailTextField, countryTextField, provinceTextField,
                     phoneNumberTextField);
-            LabelController.clearPasswordTextField(passwordTextField, confirmPasswordTextField);
+            LabelFieldController.clearPasswordTextField(passwordTextField, confirmPasswordTextField);
             countryComboBox.setSelectedIndex(0);
         } else if (n == JOptionPane.NO_OPTION) { // Database dipilih
             JPanel panel = new JPanel(new GridLayout(2, 2));

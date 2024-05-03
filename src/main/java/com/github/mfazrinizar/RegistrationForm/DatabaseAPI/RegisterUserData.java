@@ -93,8 +93,8 @@ public class RegisterUserData {
     private boolean registerUser(final String API_URL, final String BEARER_TOKEN, String name, String email,
                                  String password, String country, String province, String phoneNumber) {
         final String REGISTER_QUERY = "INSERT INTO registration_details (name, email, country, province, phone_number, password, salt, registered_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
-        GetZonedDateTime getZonedDateTime = new GetZonedDateTime();
-        String registeredTime = getZonedDateTime.getCurrentZonedTime();
+        
+        String registeredTime = GetZonedDateTime.getCurrentZonedTime();
         HttpClient client = HttpClient.newHttpClient();
 
         PasswordHasher hasher = new PasswordHasher();
