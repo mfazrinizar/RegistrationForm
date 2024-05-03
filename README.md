@@ -40,6 +40,7 @@ These operations are all performed **asynchronously** to prevent the UI from fre
 2. Download and install Java JDK with minimum version `Java 11`.
 3. I suggest opening the project in an IDE that fully supports Java, for example IntelliJ IDEA.
 4. Sign Up for a CloudFlare account and create a `SQLite-based D1 Database` hosted by CloudFlare. The D1 should be located in `Workers & Pages` section. For more explanations, visit [here](https://developers.cloudflare.com/d1/get-started/). For D1 REST API Documentation, visit [here](https://developers.cloudflare.com/api/operations/cloudflare-d1-create-database).
+5. Create a database and create a new table with id `registration_details` and 9 columns `id, name, email, country, province, phone_number, password, salt, registered_time`. `id` column should be set to *primary key* with data type `integer` and default value `1`. The rest of the columns should be set with data type `text`.
 5. Navigate to `src/main/java/com/github/mfazrinizar/RegistrationForm/Credentials` and open `.env.example` file. Delete the one line comment and change the value of each environment variables (the value must be encoded in Base64, you can use this [tool](https://base64.guru/converter/encode)). 
 6. Rename `.env.example` file into `.env`.
 7. You should be good to go. Run the `Main.java`'s `main` method.
