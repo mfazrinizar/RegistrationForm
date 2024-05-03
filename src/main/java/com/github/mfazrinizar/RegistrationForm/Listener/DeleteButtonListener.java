@@ -25,11 +25,6 @@ import com.github.mfazrinizar.RegistrationForm.Util.LabelController;
 import com.github.mfazrinizar.RegistrationForm.Util.PasswordHasher;
 
 public class DeleteButtonListener implements ActionListener {
-    // Hard-Coded ID dan API Key, seharusnya terdapat di environment variables atau
-    // di-request dari server
-    // API Credential (ACCOUNT_ID, DATABASE_ID, dan BEARER_TOKEN) sewaktu-waktu
-    // dapat berubah
-    // Kontak developer jika sudah tidak valid (dari GitHub di atas)
     private final JTextField nameTextField;
     private final JTextField emailTextField;
     private final JPasswordField passwordTextField;

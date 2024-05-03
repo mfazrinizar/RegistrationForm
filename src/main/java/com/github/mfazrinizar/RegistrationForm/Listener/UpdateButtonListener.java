@@ -246,7 +246,6 @@ public class UpdateButtonListener implements ActionListener {
                                 case "EMAIL-DOES-NOT-EXIST" ->
                                         JOptionPane.showMessageDialog(null, "Email atau Password salah."); // Menghindari
 
-
                                 // brute
                                 // force
                                 case "BAD-REQUEST" -> JOptionPane.showMessageDialog(null,
@@ -268,21 +267,21 @@ public class UpdateButtonListener implements ActionListener {
     private boolean allFormsAreSame(String currentName, String currentEmail, String currentPassword,
                                     String currentConfirmPassword, String currentCountry,
                                     String currentProvince, String currentPhoneNumber) {
-        System.out.println("currentName: " + currentName + ", originalName: " + originalName +
-                ", currentEmail: " + currentEmail + ", originalEmail: " + originalEmail + ", currentCountry: "
-                + currentCountry + ", originalCountry: " + originalCountry + ", currentProvince: "
-                + currentProvince + ", originalProvince: " + originalProvince + ", currentPhoneNumber: "
-                + currentPhoneNumber + ", originalPhoneNumber: " + originalPhoneNumber
-                + ", currentPassword: " + currentPassword + ", currentConfirmPassword: "
-                + currentConfirmPassword);
-        System.out.println("currentName.equals(originalName): " + currentName.equals(originalName)
-                + ", currentEmail.equals(originalEmail): " + currentEmail.equals(originalEmail)
-                + ", currentCountry.equals(originalCountry): " + currentCountry.equals(originalCountry)
-                + ", currentProvince.equals(originalProvince): " + currentProvince.equals(originalProvince)
-                + ", currentPhoneNumber.equals(originalPhoneNumber): "
-                + currentPhoneNumber.equals(originalPhoneNumber) + ", currentPassword.isEmpty(): "
-                + currentPassword.isEmpty() + ", currentConfirmPassword.isEmpty(): "
-                + currentConfirmPassword.isEmpty());
+//        System.out.println("currentName: " + currentName + ", originalName: " + originalName +
+//                ", currentEmail: " + currentEmail + ", originalEmail: " + originalEmail + ", currentCountry: "
+//                + currentCountry + ", originalCountry: " + originalCountry + ", currentProvince: "
+//                + currentProvince + ", originalProvince: " + originalProvince + ", currentPhoneNumber: "
+//                + currentPhoneNumber + ", originalPhoneNumber: " + originalPhoneNumber
+//                + ", currentPassword: " + currentPassword + ", currentConfirmPassword: "
+//                + currentConfirmPassword);
+//        System.out.println("currentName.equals(originalName): " + currentName.equals(originalName)
+//                + ", currentEmail.equals(originalEmail): " + currentEmail.equals(originalEmail)
+//                + ", currentCountry.equals(originalCountry): " + currentCountry.equals(originalCountry)
+//                + ", currentProvince.equals(originalProvince): " + currentProvince.equals(originalProvince)
+//                + ", currentPhoneNumber.equals(originalPhoneNumber): "
+//                + currentPhoneNumber.equals(originalPhoneNumber) + ", currentPassword.isEmpty(): "
+//                + currentPassword.isEmpty() + ", currentConfirmPassword.isEmpty(): "
+//                + currentConfirmPassword.isEmpty());
         return currentName.equals(originalName) && currentEmail.equals(originalEmail)
                 && currentCountry.equals(originalCountry) && currentProvince.equals(originalProvince)
                 && currentPhoneNumber.equals(originalPhoneNumber) && currentPassword.isEmpty()
@@ -305,15 +304,15 @@ public class UpdateButtonListener implements ActionListener {
             LabelController.clearInvalidLabel(nameErrorLabel, emailErrorLabel, passwordErrorLabel,
                     confirmPasswordErrorLabel, countryErrorLabel, provinceErrorLabel, phoneNumberErrorLabel);
 
-            String name = nameTextField.getText();
-            String email = emailTextField.getText();
+            String name = nameTextField.getText().trim();
+            String email = emailTextField.getText().trim();
             String password = new String(passwordTextField.getPassword());
             String confirmPassword = new String(confirmPasswordTextField.getPassword());
             String country = countryComboBox.getItemAt(countryComboBox.getSelectedIndex()) == null ? ""
-                    : countryComboBox.getItemAt(countryComboBox.getSelectedIndex());
-            String province = provinceTextField.getText();
+                    : countryComboBox.getItemAt(countryComboBox.getSelectedIndex()).trim();
+            String province = provinceTextField.getText().trim();
             String phoneNumber = phoneNumberTextField.getText();
-            boolean countryComboBoxDictionaryContainsCurrentCountry = countryComboBox.getDictionary()
+            boolean countryComboBoxDictionaryContainsDirectoryCountry = countryComboBox.getDictionary()
                     .contains(country);
             FormValidator validator = new FormValidator();
 
@@ -337,9 +336,16 @@ public class UpdateButtonListener implements ActionListener {
                         phoneNumber,
                         nameErrorLabel, emailErrorLabel, passwordErrorLabel, confirmPasswordErrorLabel,
                         countryErrorLabel, provinceErrorLabel, phoneNumberErrorLabel, true,
-                        countryComboBoxDictionaryContainsCurrentCountry)) {
+                        countryComboBoxDictionaryContainsDirectoryCountry)) {
                     // System.out.println(same + " " + valid);
                     System.out.println("Masuk else if");
+
+                    name = name.equals(originalName) ? "" : name;
+                    email = email.equals(originalEmail) ? "" : email;
+                    country = country.equals(originalCountry) ? "" : country;
+                    province = province.equals(originalProvince) ? "" : province;
+                    phoneNumber = phoneNumber.equals(originalPhoneNumber) ? "" : phoneNumber;
+
                     userDataUpdater.updateUserAsync(API_URL, BEARER_TOKEN, name, email, password, country, province,
                             phoneNumber,
                             originalEmail,

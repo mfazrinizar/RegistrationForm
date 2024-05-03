@@ -94,8 +94,8 @@ public class UpdateUserData {
     private boolean updateUserData(final String API_URL, final String BEARER_TOKEN, String name, String email,
                                    String password, String country, String province,
                                    String phoneNumber, String emailOrigin) {
-        final String UPDATE_QUERY_WITH_PASSWORD = "UPDATE registration_details SET name = COALESCE(?, name), email = COALESCE(?, email), country = COALESCE(?, country), province = COALESCE(?, province), phone_number = COALESCE(?, phone_number), password = COALESCE(?, password), salt = COALESCE(?, salt) WHERE email = ?;";
-        final String UPDATE_QUERY_WITHOUT_PASSWORD = "UPDATE registration_details SET name = COALESCE(?, name), email = COALESCE(?, email), country = COALESCE(?, country), province = COALESCE(?, province), phone_number = COALESCE(?, phone_number) WHERE email = ?;";
+        final String UPDATE_QUERY_WITH_PASSWORD = "UPDATE registration_details SET name = COALESCE(NULLIF(?, ''), name), email = COALESCE(NULLIF(?, ''), email), country = COALESCE(NULLIF(?, ''), country), province = COALESCE(NULLIF(?, ''), province), phone_number = COALESCE(NULLIF(?, ''), phone_number), password = COALESCE(NULLIF(?, ''), password), salt = COALESCE(NULLIF(?, ''), salt) WHERE email = ?;";
+        final String UPDATE_QUERY_WITHOUT_PASSWORD = "UPDATE registration_details SET name = COALESCE(NULLIF(?, ''), name), email = COALESCE(NULLIF(?, ''), email), country = COALESCE(NULLIF(?, ''), country), province = COALESCE(NULLIF(?, ''), province), phone_number = COALESCE(NULLIF(?, ''), phone_number) WHERE email = ?;";
         HttpClient client = HttpClient.newHttpClient();
 
         PasswordHasher hasher = new PasswordHasher();
@@ -110,19 +110,19 @@ public class UpdateUserData {
         String encodedSalt = hasher.encodeToBase64(salt);
 
         String[] params = {
-                name.trim().isEmpty() ? null : name,
-                email.trim().isEmpty() ? null : email,
-                country.trim().isEmpty() ? null : country,
-                province.trim().isEmpty() ? null : province,
-                phoneNumber.trim().isEmpty() ? null : phoneNumber,
-                password.isEmpty() ? null : hasher.getHashedPassword(password, salt),
-                password.isEmpty() ? null : encodedSalt,
+                name.trim().isEmpty() ? "" : name,
+                email.trim().isEmpty() ? "" : email,
+                country.trim().isEmpty() ? "" : country,
+                province.trim().isEmpty() ? "" : province,
+                phoneNumber.trim().isEmpty() ? "" : phoneNumber,
+                password.isEmpty() ? "" : hasher.getHashedPassword(password, salt),
+                password.isEmpty() ? "" : encodedSalt,
                 emailOrigin
         };
 
         String sql = password.isEmpty() ? UPDATE_QUERY_WITHOUT_PASSWORD : UPDATE_QUERY_WITH_PASSWORD;
 
-        String body = String.format("{\n" +
+        String bodyWithPassword = String.format("{\n" +
                         "\"params\": [\n" +
                         "  \"%s\",\n" +
                         "  \"%s\",\n" +
@@ -136,17 +136,31 @@ public class UpdateUserData {
                         "\"sql\": \"%s\"\n" +
                         "}",
                 params[0], params[1], params[2], params[3], params[4], params[5], params[6], params[7], sql);
-
+        String bodyWithoutPassword = String.format("{\n" +
+                        "\"params\": [\n" +
+                        "  \"%s\",\n" +
+                        "  \"%s\",\n" +
+                        "  \"%s\",\n" +
+                        "  \"%s\",\n" +
+                        "  \"%s\",\n" +
+                        "  \"%s\"\n" +
+                        "],\n" +
+                        "\"sql\": \"%s\"\n" +
+                        "}",
+                params[0], params[1], params[2], params[3], params[4], params[7], sql);
+        // System.out.println(java.util.Arrays.toString(params));
+        // System.out.println(bodyWithoutPassword);
+        // System.out.println(bodyWithPassword);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(API_URL))
                 .header("Authorization", "Bearer " + BEARER_TOKEN)
                 .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(body))
+                .POST(HttpRequest.BodyPublishers.ofString(password.isEmpty() ? bodyWithoutPassword : bodyWithPassword))
                 .build();
 
         try {
             HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
-
+            // System.out.println(response.body());
             return response.statusCode() == 200;
 
         } catch (IOException | InterruptedException e1) {

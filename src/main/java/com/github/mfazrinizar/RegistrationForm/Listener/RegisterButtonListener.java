@@ -99,8 +99,8 @@ public class RegisterButtonListener implements ActionListener {
                         emailErrorLabel.setText("Email sudah terdaftar.");
                         JOptionPane.showMessageDialog(null, "Email sudah terdaftar. Gunakan email lain.");
                     } else {
-                        registerUser.registerUserAsync(API_URL, BEARER_TOKEN, name, email, password, country, province,
-                                phoneNumber, success -> {
+                        registerUser.registerUserAsync(API_URL, BEARER_TOKEN, name, email, country, province,
+                                phoneNumber, password, success -> {
                                     if (success) {
                                         System.out.println("Registrasi Sukses.");
                                     } else {
