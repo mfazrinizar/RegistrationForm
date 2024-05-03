@@ -37,7 +37,7 @@ These operations are all performed **asynchronously** to prevent the UI from fre
 
 ## How to Run
 1. Clone this repository (using `git clone https://github.com/mfazrinizar/RegistrationForm.git` command or download in ZIP form).
-2. Download Java JDK with minimum version `Java 11`.
+2. Download and install Java JDK with minimum version `Java 11`.
 3. I suggest opening the project in an IDE that fully supports Java, for example IntelliJ IDEA.
 4. Sign Up for a CloudFlare account and create a `SQLite-based D1 Database` hosted by CloudFlare. The D1 should be located in `Workers & Pages` section. For more explanations, visit [here](https://developers.cloudflare.com/d1/get-started/). For D1 REST API Documentation, visit [here](https://developers.cloudflare.com/api/operations/cloudflare-d1-create-database).
 5. Navigate to `src/main/java/com/github/mfazrinizar/RegistrationForm/Credentials` and open `.env.example` file. Delete the one line comment and change the value of each environment variables (the value must be encoded in Base64, you can use this [tool](https://base64.guru/converter/encode)). 
